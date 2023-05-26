@@ -10,4 +10,9 @@ sysCallB = SysCall(1)
 sysCallC = SysCall(5)
 sysCallD = SysCall(2)
 
-print(sysCallA.execTime)
+def FCFS(l):
+    for i in l:
+        for j in i.execTime:
+            print
+        
+    
