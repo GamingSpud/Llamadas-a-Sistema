@@ -20,14 +20,34 @@ def callClear():
 
 def FCFS(l):
     lines = []
-    for i in range (0,len(l)*2,2):
-        lines.append("  |")
-        lines.append("---")
-        #for j in range (0,l[i].execTime):
-            #line1 = line1 + "T" + str(i+j) + "|"
-            #if i == 0 and j == 0:
-                
-            #line1 = line1 + "P" + str(i) + "|"
+    totalTime = 1
+    horLine = "---"
+    verLine = "|"
+    for n in l:
+        totalTime += n.execTime    
+    for i in range (0,(len(l)+1)*2,2):
+        if i == 0:
+            lines.append("  " + verLine)
+            lines.append(horLine)
+            for j in range (0,totalTime):
+                lines[i] = lines[i] + "T" + str(i+j) + verLine
+                lines[i+1] = lines[i+1] + horLine
+                if len(str(j)) < len(str(j+1)):
+                    horLine = horLine + "-"
+        else:
+            lines.append("P" + str(int((i/2)-1)) + verLine)
+            lines.append(horLine)
+            for j in range (0,totalTime):
+                lines[i] = lines[i] + "P" + str(int((i/2)-1)) + verLine
+                lines[i+1] = lines[i+1] + horLine
+                if len(str(j)) < len(str(j+1)):
+                    horLine = horLine + "-"
+                    if j%2 == 0:
+                        verLine = verLine + " "
+                    else:
+                        verLine = " " + verLine
+        horLine = "---"
+        verLine = "|"
         print(lines[i])
         print(lines[i+1])
         
