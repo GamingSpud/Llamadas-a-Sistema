@@ -1,3 +1,11 @@
+def toNumber(a):
+    for i in a:
+        i = int(i,36) - 10 # Assume letter is a number in base 36, convert to base 10 and substract 10.
+        #if (i<10):
+            #i = "".join(['0',str(i)])
+        #print (str(i))
+    return i
+
 class SysCall:
     def __init__(self, name, execTime):
         self.name = name
@@ -58,7 +66,7 @@ def FCFS(l):
 
 FCFSSchedule = FCFS(processList)
 
-def roundRobin(l,n):
+def roundRobin(l,n=1):
     l2 = []
     lr = []
     totalTime = 1
@@ -92,32 +100,31 @@ print(str(FCFSSchedule) + " <= FCFS")
 print(str(RRSchedule) + " <= RR")
 print(str(SJFSchedule) + " <= SJF")
 
-def printSchedule(l):
+def printSchedule(l,l2):
     lines = []
-    totalTime = 1
+    totalTime = 0
     horLine = "---"
     verLine = "|"
+    print()
     for n in l:
         totalTime += n.execTime
     for i in range (0,(len(l)+1)*2,2):
+        n = int((i/2)-1)
         if i == 0:
-            lines.append("  " + verLine)
-            lines.append(horLine)
+            lines.append("     " + verLine)
+            lines.append("---" + horLine)
             for j in range (0,totalTime):
-                lines[i] = lines[i] + "T" + str(i+j) + verLine
+                lines[i] = lines[i] + "T" + str(j) + verLine
                 lines[i+1] = lines[i+1] + horLine
                 if len(str(j)) < len(str(j+1)):
                     horLine = horLine + "-"
         else:
-            lines.append("P" + str(int((i/2)-1)) + verLine)
-            lines.append(horLine)
+            lines.append("P" + str(n) + "(" + l[n].name + ")" + verLine)
+            lines.append(horLine + horLine)
             for j in range (0,totalTime):
-                #lines[i] = lines[i] + "P" + str(int((i/2)-1)) + verLine
                 cell = "  "
-                for k in range(0,len(l)):
-                    for m in range (0,l[k].execTime):
-                        if i-2 == k and j == m:
-                            cell = " E"
+                if n == toNumber(l2[j]):
+                    cell = " E"
                 lines[i] = lines[i] + cell + verLine
                 lines[i+1] = lines[i+1] + horLine
                 if len(str(j)) < len(str(j+1)):
@@ -131,4 +138,4 @@ def printSchedule(l):
         print(lines[i])
         print(lines[i+1])
         
-#printSchedule(callList)
+printSchedule(processList,roundRobin(processList))
