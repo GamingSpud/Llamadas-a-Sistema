@@ -1,3 +1,5 @@
+#Video Entrega: https://youtu.be/pGF8RlnMoio
+
 #Constructor para clase SysCall que tiene como parametros nombre y tiempo de ejecución.
 #El tiempo se mide en una unidad de tiempo arbitraria e indivisible.
 #Para esta implementación se utiliza ua unidad de tiempo que también será el quantum
@@ -198,3 +200,5 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+#Video Entrega: https://youtu.be/pGF8RlnMoio
