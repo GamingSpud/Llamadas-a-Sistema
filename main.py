@@ -1,30 +1,104 @@
 class SysCall:
-    def __init__(self, execTime):
-        self.execTime=execTime
+    def __init__(self, name, execTime):
+        self.name = name
+        self.execTime = execTime
     
+    def __str__(self):
+        p = "P" + self.name
+        return (p)
+    
+    __repr__ = __str__
+
     def time(self):
-        return(f"Execution Time = {self.execTime} units.")
+        return (f"Execution Time = {self.execTime} units.")
+    
+    def __eq__(self, other):
+        return self.execTime == other.execTime
+    
+    def __lt__(self, other):
+        return self.execTime < other.execTime
+    
+    def __le__(self, other):
+        return self.execTime <= other.execTime
+    
+    def __gt__(self, other):
+        return self.execTime > other.execTime
+    
+    def __ge__(self, other):
+        return self.execTime >= other.execTime
+    
+    def __ne__(self, other):
+        return self.execTime != other.execTime
 
-sysCallA = SysCall(3)
-sysCallB = SysCall(1)
-sysCallC = SysCall(5)
-sysCallD = SysCall(2)
 
-callList = []
+processA = SysCall("A", 3)
+processB = SysCall("B", 1)
+processC = SysCall("C", 5)
+processD = SysCall("D", 2)
 
-def callQueue(s):
-    callList.append(s)
+processList = []
+
+def processQueue(s):
+    processList.append(s)
 
 def callClear():
     callList = []
 
+processQueue(processA)
+processQueue(processB)
+processQueue(processC)
+processQueue(processD)
+
 def FCFS(l):
+    lr = []
+    for i in range(0,len(l)):
+        for j in range (0,l[i].execTime):
+            lr.append(l[i].name)
+    return lr
+
+FCFSSchedule = FCFS(processList)
+
+def roundRobin(l,n):
+    l2 = []
+    lr = []
+    totalTime = 1
+    for i in range(0,len(l)):
+        totalTime += l[i].execTime
+        l2.append(l[i].execTime)
+    for i in range(0,totalTime):
+        for j in range(0, len(l)):
+            if l2[j] > 0:
+                lr.append(l[j].name)
+                l2[j] = l2[j] - n
+    return lr
+
+RRSchedule = roundRobin(processList,1)
+
+def SJF(l):
+    l2 = []
+    lr = []
+    maxTime = 0
+    totalTime = 1
+    for i in range (0, len(l)):
+        l2.append(l[i])
+    l2.sort()
+    lr = FCFS(l2)
+    return lr
+
+SJFSchedule = SJF(processList)
+
+print(processList)
+print(str(FCFSSchedule) + " <= FCFS")
+print(str(RRSchedule) + " <= RR")
+print(str(SJFSchedule) + " <= SJF")
+
+def printSchedule(l):
     lines = []
     totalTime = 1
     horLine = "---"
     verLine = "|"
     for n in l:
-        totalTime += n.execTime    
+        totalTime += n.execTime
     for i in range (0,(len(l)+1)*2,2):
         if i == 0:
             lines.append("  " + verLine)
@@ -38,7 +112,13 @@ def FCFS(l):
             lines.append("P" + str(int((i/2)-1)) + verLine)
             lines.append(horLine)
             for j in range (0,totalTime):
-                lines[i] = lines[i] + "P" + str(int((i/2)-1)) + verLine
+                #lines[i] = lines[i] + "P" + str(int((i/2)-1)) + verLine
+                cell = "  "
+                for k in range(0,len(l)):
+                    for m in range (0,l[k].execTime):
+                        if i-2 == k and j == m:
+                            cell = " E"
+                lines[i] = lines[i] + cell + verLine
                 lines[i+1] = lines[i+1] + horLine
                 if len(str(j)) < len(str(j+1)):
                     horLine = horLine + "-"
@@ -51,9 +131,4 @@ def FCFS(l):
         print(lines[i])
         print(lines[i+1])
         
-callQueue(sysCallA)
-callQueue(sysCallB)
-callQueue(sysCallC)
-callQueue(sysCallD)
-
-FCFS(callList)
+#printSchedule(callList)
